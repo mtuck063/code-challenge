@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "6f2d2f02-2cbe-4ab6-9266-447d654aeba9",
+		"name": "Thumbnail API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8494988"
+	},
+	"item": [
+		{
+			"name": "Create Thumbnails",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "img",
+							"type": "file",
+							"src": "change me"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ishhcq34w2.execute-api.us-east-1.amazonaws.com/Prod/upload",
+					"protocol": "https",
+					"host": [
+						"ishhcq34w2",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

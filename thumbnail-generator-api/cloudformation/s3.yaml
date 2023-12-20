@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  ThumbnailBucketName:
+    Default: thumbnail-generator-api-2024
+    Description: thumbnail bucket name
+    Type: String
+
+Resources:
+  ThumbnailBucket:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref ThumbnailBucketName
+
+Outputs:
+  ThumbnailBucketName:
+    Description: Name of the main bucket
+    Value: !Ref ThumbnailBucketName

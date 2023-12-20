@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: thumbnail-generator-api
+
+Globals:
+  Api:
+    BinaryMediaTypes:
+      - 'multipart/form-data'
+  Function:
+    Timeout: 30
+
+Parameters:
+  ThumbnailBucketName:
+    Default: thumbnail-generator-api-2024
+    Description: thumbnail bucket name
+    Type: String
+
+Resources:
+  FfmpegLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - nodejs18.x
+    Metadata:
+      BuildMethod: makefile
+      BuildArchitecture: x86_64
+  ThumbnailGeneratorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: main.lambdaHandler
+      Runtime: nodejs18.x
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: !Ref ThumbnailBucketName
+      Environment:
+        Variables:
+          Bucket: !Ref ThumbnailBucketName
+      Architectures:
+        - x86_64
+      Layers:
+        - !Ref FfmpegLayer
+      LoggingConfig:
+        ApplicationLogLevel: TRACE
+        LogFormat: JSON
+        LogGroup: /aws/lambda/thumbnail-generator-api
+        SystemLogLevel: DEBUG
+      Events:
+        ThumbnailGenerator:
+          Type: Api
+          Properties:
+            Path: /upload
+            Method: POST
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'es2020'
+        Sourcemap: false
+        EntryPoints:
+          - main.ts
+
+Outputs:
+  ThumbnailGeneratorApi:
+    Description: 'Thumbnail Generator API Endpoint URL'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/upload'
+  ThumbnailGeneratorFunction:
+    Description: 'Thumbnail Generator Lambda Function ARN'
+    Value: !GetAtt ThumbnailGeneratorFunction.Arn
+  ThumbnailGeneratorFunctionIamRole:
+    Description: 'Implicit IAM Role created for Thumbnail Generator function'
+    Value: !GetAtt ThumbnailGeneratorFunctionRole.Arn
+  ThumbnailBucketName:
+    Description: Name of the main bucket
+    Value: !Ref ThumbnailBucketName

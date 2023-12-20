@@ -1,0 +1,6 @@
+# nx
+.nx/installation
+.nx/cache
+
+# dependencies
+/node_modules

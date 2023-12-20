@@ -1,0 +1,51 @@
+{
+  "name": "api",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "thumbnail-generator-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "command": "sam build",
+      "dependsOn": ["^build"],
+      "options": {
+        "cwd": "thumbnail-generator-api"
+      }
+    },
+    "serve": {
+      "command": "sam local start-api",
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "thumbnail-generator-api"
+      }
+    },
+    "deploy": {
+      "command": "sam deploy",
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "thumbnail-generator-api"
+      }
+    },
+    "deploy-s3": {
+      "command": "aws cloudformation deploy --template s3.yaml --stack-name thumbnail-generator-api",
+      "options": {
+        "cwd": "thumbnail-generator-api/cloudformation"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "thumbnail-generator-api/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

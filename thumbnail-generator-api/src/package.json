@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "main": "./main.js",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.474.0",
+    "@aws-sdk/lib-storage": "^3.474.0",
+    "@aws-sdk/s3-request-presigner": "^3.474.0",
+    "nanoid": "^5.0.4",
+    "lambda-multipart-parser": "^1.0.1"
+  }
+}
